@@ -1,0 +1,3 @@
+The primitives took forever for me to understand 
+
+underscores instead of spaces

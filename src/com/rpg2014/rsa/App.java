@@ -50,7 +50,7 @@ public class App
     	}else {
     		keypair = GenerateKey.generateKey(765);
     	}
-    	String str = "The primitives took forever for me to understand";
+    	String str = args[0];
 //    	System.out.println(str.length());
 		String in = RSA.encrypt(str, keypair);
 		System.out.println("encrypted message: " +in);
