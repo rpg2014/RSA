@@ -1,6 +1,8 @@
 package com.rpg2014.rsa.keys;
 
-public class RSAKey {
+import java.io.Serializable;
+
+public class RSAKey implements Serializable{
 
 	
 	private PrivateKey privateKey;

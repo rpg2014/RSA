@@ -13,7 +13,7 @@ public class PrimeGenerator {
 		BigInteger q = new BigInteger("0");
 		int count = 0;
 		do {
-			System.out.println("generating prime set numbeer: "+ count+1);
+//			System.out.println("generating prime set numbeer: "+ count+1);
 			p = generatePrime(bitLength);
 			q = generatePrime(bitLength);
 			count++;

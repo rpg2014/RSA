@@ -1,8 +1,9 @@
 package com.rpg2014.rsa.keys;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 
-public class PrivateKey {
+public class PrivateKey implements Serializable{
 
 	private BigInteger n;
 	private BigInteger d;

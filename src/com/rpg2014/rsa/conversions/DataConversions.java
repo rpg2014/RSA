@@ -15,14 +15,13 @@ public class DataConversions {
 	public static BigInteger StringToInt(String m) {
 		 byte[] bytes = (m.getBytes());
 		
-		System.out.println("num bytes = "+ bytes.length);
+//		System.out.println("num bytes = "+ bytes.length);
 		 BigInteger sum = new BigInteger("0");
 		 int i = bytes.length-1;
 		 for (byte b:bytes) {
 		 	Byte by = new Byte(b);
 		 	BigInteger byteVal = new BigInteger(Integer.toString(by.intValue()));
 		 	sum = sum.add(byteVal.multiply(twofiftysix.pow(i) ));
-		 	System.out.println("I = "+ i);
 		 	i--;
 		 }
 		 return sum;

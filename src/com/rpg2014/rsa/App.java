@@ -1,6 +1,14 @@
 package com.rpg2014.rsa;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigInteger;
+import java.util.Scanner;
 
 import com.rpg2014.rsa.conversions.DataConversions;
 import com.rpg2014.rsa.keys.GenerateKey;
@@ -22,14 +30,54 @@ public class App
 //    	String out = DataConversions.IntToString(in, str.length());
 //    	System.out.println(out);
     	
-    	RSAKey keypair = GenerateKey.generateKey(2048);
-    	String str = "The FitnessGram Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test will begin in 30 seconds. Line up at the start. ";
-    	System.out.println(str.length());
+    	File key = new File("key.ser");
+    	RSAKey keypair;
+    	if(key.exists()) {
+    		try {
+    		FileInputStream fileIn = new FileInputStream("key.ser");
+	         ObjectInputStream in = new ObjectInputStream(fileIn);
+	         keypair = (RSAKey) in.readObject();
+	         in.close();
+	         fileIn.close();
+	      } catch (IOException i) {
+	         i.printStackTrace();
+	         return;
+	      } catch (ClassNotFoundException c) {
+	         System.out.println("Employee class not found");
+	         c.printStackTrace();
+	         return;
+	      }
+    	}else {
+    		keypair = GenerateKey.generateKey(765);
+    	}
+    	String str = "The primitives took forever for me to understand";
+//    	System.out.println(str.length());
 		String in = RSA.encrypt(str, keypair);
-		System.out.println(in);
+		System.out.println("encrypted message: " +in);
+		
+		
 		
 		String out = RSA.decrypt(in, keypair);
 		System.out.println("out: "+out);
+		
+		
+		try {
+			FileWriter scan = new FileWriter(new File("message.txt"));
+			scan.write(in);
+			scan.close();
+			
+			
+			
+	         FileOutputStream fileOut =
+	         new FileOutputStream("key.ser");
+	         ObjectOutputStream outStream = new ObjectOutputStream(fileOut);
+	         outStream.writeObject(keypair);
+	         outStream.close();
+	         fileOut.close();
+	         
+	      } catch (IOException i) {
+	         i.printStackTrace();
+	      }
 		
 		
 		
