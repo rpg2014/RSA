@@ -10,50 +10,69 @@ import com.rpg2014.rsa.types.IntegerToLargeException;
 public class DataConversions {
 	private static BigInteger twofiftysix = new BigInteger("256");
 	
+	
+	//this method is correct.  not completly
 	public static BigInteger StringToInt(String m) {
-		// byte[] bytes = (m.getBytes());
+		 byte[] bytes = (m.getBytes());
+		
+		System.out.println("num bytes = "+ bytes.length);
+		 BigInteger sum = new BigInteger("0");
+		 int i = bytes.length-1;
+		 for (byte b:bytes) {
+		 	Byte by = new Byte(b);
+		 	BigInteger byteVal = new BigInteger(Integer.toString(by.intValue()));
+		 	sum = sum.add(byteVal.multiply(twofiftysix.pow(i) ));
+		 	System.out.println("I = "+ i);
+		 	i--;
+		 }
+		 return sum;
 		
 		
-		// BigInteger sum = new BigInteger("0");
-		// int i = 0;
-		// for (byte b:bytes) {
-		// 	Byte by = new Byte(b);
-		// 	BigInteger byteVal = new BigInteger(Integer.toString(by.intValue()));
-		// 	sum = sum.add(byteVal.multiply(twofiftysix.pow(i) ));
-		// 	i++;
-		// }
-		// return sum;
-		String bigInteger = "";
-		for( int i =0 ;i<m.length(); i++){
-			String num = String.valueOf((int)m.charAt(i));
-			
-			if (num.length()<3) {
-				int zerosToAdd = 3-num.length();
-				num = addZeros(zerosToAdd,num);
-				
-			}
-			
-			bigInteger+= num;
-		}
 		
-		return new BigInteger(bigInteger);
+		
 
 	}
 	
-	
+	//convert number given to base 256 thentake those digits to be ascii values
 	public static String IntToString(BigInteger num, int length) {
-		String number = num.toString();
-		int zerosMissing= number.length()%3;
-		//number = addZeros(zerosMissing,number);
-		
-		String message = "";
-		for(int i = 0 ; i<length;i+=1) {
-			char c= (char) Integer.parseInt(number.substring(0, 3));
-			
-			message += c;
-			number = number.substring(3,number.length());
+		if (num.compareTo(twofiftysix.pow(length))>=0) {
+			throw new IntegerToLargeException();
 		}
-		return message;
+		
+		
+		
+		ArrayList<Integer> integers = convertToBase256(num,length);
+		String result = "";
+		for(Integer i: integers) {
+			result+= (char) i.intValue();
+		}
+		return result;
+	}
+	
+	
+	public static ArrayList<Integer> convertToBase256(BigInteger num, int length){
+		String number = num.toString();
+		int[] result = new int[length];
+		BigInteger quotent = num.divide(twofiftysix);
+		BigInteger remainder = num.mod(twofiftysix);
+		result[length-1] =  remainder.intValue();
+		
+		for(int i = length-2;i>=0;i--) {
+		
+			remainder = quotent.mod(twofiftysix);
+			quotent = quotent.divide(twofiftysix);
+			
+			result[i] =  remainder.intValue();
+		}
+		
+		System.out.println(Arrays.toString(result));
+		ArrayList<Integer> integers = new ArrayList<>();
+		for(int i : result) {
+			if(i!=0) {
+				integers.add(i);
+			}
+		}
+		return integers;
 	}
 	
 	private static String addZeros(int zerosToAdd,String number) {
